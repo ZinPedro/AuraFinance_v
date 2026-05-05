@@ -1,8 +1,46 @@
 import { Bell, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Usuario {
+  id_usuario: number;
+  nome: string;
+  email: string;
+  idade: number;
+}
 
 function TopBar() {
   const [isFocused, setIsFocused] = useState(false);
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+  useEffect(() => {
+    async function fetchUsuario() {
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+
+      if(!token) return;
+
+      try {
+        const response = await fetch("http://localhost:3000/auth/me", {
+          method: "GET",
+          headers: {
+            Authorization : `Bearer ${token}`,
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+              setUsuario(data.user);
+            }
+          } catch (error) {
+            console.error("Erro ao buscar usuário:", error);
+          }
+    }
+    fetchUsuario();
+  }, []);
+
+  const inicial = usuario?.nome?.charAt(0).toUpperCase() ?? "?";
+
+  const idFormatado = usuario ? String(usuario.id_usuario).padStart(4, "0") : "----";
 
   return (
     <div
@@ -76,9 +114,11 @@ function TopBar() {
           }}
         >
           <div>
-            <p style={{ margin: 0, fontWeight: "500" }}>Alex Rivera</p>
+            <p style={{ margin: 0, fontWeight: "500" }}>
+              {usuario ? usuario.nome : "Carregando..."}
+            </p>
             <p style={{ margin: 0, fontSize: "12px", color: "gray" }}>
-              ID: 4429-120
+               ID: {idFormatado}
             </p>
           </div>
 
@@ -96,7 +136,7 @@ function TopBar() {
               cursor: "pointer",
             }}
           >
-            A
+            {inicial}
           </div>
         </div>
       </div>
