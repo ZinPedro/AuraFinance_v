@@ -21,7 +21,7 @@ const Usuario = db.define('Usuario', {
         unique: true
     },
     senha:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false
     }
 },
