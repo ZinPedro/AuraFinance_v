@@ -1,104 +1,196 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Toast } from "./Toast";         // ajuste o caminho se necessário
+import { useToast } from "../hooks/useToast"; // ajuste o caminho se necessário
+
 function FormLogin() {
+  const [modo, setModo] = useState<"login" | "cadastro">("login");
+  const navigate = useNavigate();
+  const { toasts, mostrarToast, removerToast } = useToast(); // ← hook do toast
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [lembrar, setLembrar] = useState(false);
+
+  const [nome, setNome] = useState("");
+  const [emailCadastro, setEmailCadastro] = useState("");
+  const [idade, setIdade] = useState("");
+  const [senhaCadastro, setSenhaCadastro] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+
+  const [carregando, setCarregando] = useState(false);
+
+  function alternarModo() {
+    setModo(modo === "login" ? "cadastro" : "login");
+  }
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setCarregando(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        mostrarToast(data.message || "Erro ao fazer login", "erro");
+        return;
+      }
+
+      lembrar ? localStorage.setItem("token", data.token) : sessionStorage.setItem("token", data.token);
+      mostrarToast("Login realizado com sucesso!", "sucesso");
+      setTimeout(() => navigate("/dashboard"), 1000);
+    } catch {
+      mostrarToast("Erro de conexão. Tente novamente.", "erro");
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  async function handleCadastro(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (senhaCadastro !== confirmarSenha) {
+      mostrarToast("As senhas não coincidem!", "aviso");
+      return;
+    }
+
+    setCarregando(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email: emailCadastro, idade: Number(idade), senha: senhaCadastro }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        mostrarToast(data.message || "Erro ao cadastrar", "erro");
+        return;
+      }
+
+      mostrarToast("Conta criada com sucesso! Faça o login.", "sucesso");
+      setModo("login");
+      setEmail(emailCadastro);
+      setSenha("");
+      setNome(""); setEmailCadastro(""); setIdade(""); setSenhaCadastro(""); setConfirmarSenha("");
+    } catch {
+      mostrarToast("Erro de conexão. Tente novamente.", "erro");
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  const inputStyle = {
+    padding: "12px", borderRadius: "10px", border: "1px solid #d1d5db",
+    outline: "none", fontSize: "14px", width: "100%", boxSizing: "border-box" as const,
+  };
+
+  const labelStyle = { fontSize: "14px", fontWeight: "500" as const, color: "#111827" };
+
   return (
-    <div
-      style={{
-        background: "#ffffff",
-        width: "720px",
-        padding: "40px",
-        borderRadius: "20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}
-    >
-      <form style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: "24px", color: "#111827" }}>
-            Bem-vindo de volta!
-          </h1>
-          <p style={{ margin: 0, fontSize: "14px", color: "#6b7280" }}>
-            Entre na sua conta para continuar
-          </p>
+    <>
+      <div style={{ background: "#ffffff", width: "480px", padding: "40px", borderRadius: "20px", display: "flex", flexDirection: "column" as const, gap: "20px" }}>
+
+        {/* Abas */}
+        <div style={{ display: "flex", borderBottom: "2px solid #e5e7eb" }}>
+          <button onClick={() => setModo("login")} style={{ flex: 1, padding: "10px", border: "none", background: "none", fontWeight: "600", fontSize: "14px", cursor: "pointer", color: modo === "login" ? "#4338ca" : "#9ca3af", borderBottom: modo === "login" ? "2px solid #4338ca" : "2px solid transparent", marginBottom: "-2px", transition: "all 0.2s" }}>
+            Login
+          </button>
+          <button onClick={() => setModo("cadastro")} style={{ flex: 1, padding: "10px", border: "none", background: "none", fontWeight: "600", fontSize: "14px", cursor: "pointer", color: modo === "cadastro" ? "#4338ca" : "#9ca3af", borderBottom: modo === "cadastro" ? "2px solid #4338ca" : "2px solid transparent", marginBottom: "-2px", transition: "all 0.2s" }}>
+            Cadastro
+          </button>
         </div>
 
-        {/* Email */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <label style={{ fontSize: "14px", fontWeight: "500", color: "#111827" }}>
-            E-mail
-          </label>
-          <input
-            type="email"
-            placeholder="seu@email.com"
-            style={{
-              padding: "12px",
-              borderRadius: "10px",
-              border: "1px solid #d1d5db",
-              outline: "none",
-            }}
-          />
-        </div>
+        {/* FORM LOGIN */}
+        {modo === "login" && (
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: "22px", color: "#111827" }}>Bem-vindo de volta!</h1>
+              <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#6b7280" }}>Entre na sua conta para continuar</p>
+            </div>
 
-        {/* Senha */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <label style={{ fontSize: "14px", fontWeight: "500", color: "#111827" }}>
-            Senha
-          </label>
-          <input
-            type="password"
-            placeholder="••••••••"
-            style={{
-              padding: "12px",
-              borderRadius: "10px",
-              border: "1px solid #d1d5db",
-              outline: "none",
-            }}
-          />
-        </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>E-mail</label>
+              <input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+            </div>
 
-        {/* Lembrar-me + Esqueceu senha */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontSize: "14px",
-          }}
-        >
-          <label style={{ display: "flex", alignItems: "center", gap: "6px", color: "#b0b0b0" }}>
-            <input type="checkbox" />
-            Lembrar usuário
-          </label>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>Senha</label>
+              <input type="password" placeholder="••••••••" value={senha} onChange={(e) => setSenha(e.target.value)} required style={inputStyle} />
+            </div>
 
-          <a href="#" style={{ color: "#4f46e5", textDecoration: "none" }}>
-            Esqueceu a senha?
-          </a>
-        </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "14px" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280" }}>
+                <input type="checkbox" checked={lembrar} onChange={(e) => setLembrar(e.target.checked)} />
+                Lembrar usuário
+              </label>
+              <a href="#" style={{ color: "#4f46e5", textDecoration: "none" }}>Esqueceu a senha?</a>
+            </div>
 
-        {/* Botão */}
-        <button
-          style={{
-            marginTop: "10px",
-            padding: "12px",
-            borderRadius: "10px",
-            border: "none",
-            background: "#4338ca",
-            color: "#ffffff",
-            fontWeight: "600",
-            cursor: "pointer",
-          }}
-        >
-          Entrar
-        </button>
+            <button type="submit" disabled={carregando} style={{ marginTop: "10px", padding: "12px", borderRadius: "10px", border: "none", background: carregando ? "#6366f1" : "#4338ca", color: "#ffffff", fontWeight: "600", fontSize: "15px", cursor: carregando ? "not-allowed" : "pointer" }}>
+              {carregando ? "Entrando..." : "Entrar"}
+            </button>
 
-        {/* Cadastro */}
-        <p style={{ textAlign: "center", fontSize: "14px", color: "#6b7280" }}>
-          Não tem uma conta?{" "}
-          <a href="#" style={{ color: "#4338ca", fontWeight: "500" }}>
-            Cadastre-se gratuitamente
-          </a>
-        </p>
-      </form>
-    </div>
+            <p style={{ textAlign: "center", fontSize: "14px", color: "#6b7280", margin: 0 }}>
+              Não tem uma conta?{" "}
+              <span onClick={alternarModo} style={{ color: "#4338ca", fontWeight: "500", cursor: "pointer" }}>Cadastre-se gratuitamente</span>
+            </p>
+          </form>
+        )}
+
+        {/* FORM CADASTRO */}
+        {modo === "cadastro" && (
+          <form onSubmit={handleCadastro} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: "22px", color: "#111827" }}>Crie sua conta</h1>
+              <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#6b7280" }}>Preencha os dados para se cadastrar</p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>Nome</label>
+              <input type="text" placeholder="Seu nome completo" value={nome} onChange={(e) => setNome(e.target.value)} required style={inputStyle} />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>E-mail</label>
+              <input type="email" placeholder="seu@email.com" value={emailCadastro} onChange={(e) => setEmailCadastro(e.target.value)} required style={inputStyle} />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>Idade</label>
+              <input type="number" placeholder="Sua idade" value={idade} onChange={(e) => setIdade(e.target.value)} required min={1} max={120} style={inputStyle} />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>Senha</label>
+              <input type="password" placeholder="Mínimo 8 caracteres" value={senhaCadastro} onChange={(e) => setSenhaCadastro(e.target.value)} required minLength={8} style={inputStyle} />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={labelStyle}>Confirmar senha</label>
+              <input type="password" placeholder="Repita a senha" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} required style={inputStyle} />
+            </div>
+
+            <button type="submit" disabled={carregando} style={{ marginTop: "10px", padding: "12px", borderRadius: "10px", border: "none", background: carregando ? "#6366f1" : "#4338ca", color: "#ffffff", fontWeight: "600", fontSize: "15px", cursor: carregando ? "not-allowed" : "pointer" }}>
+              {carregando ? "Cadastrando..." : "Criar conta"}
+            </button>
+
+            
+          </form>
+        )}
+      </div>
+
+      {/* TOAST - renderiza por cima de tudo */}
+      <Toast toasts={toasts} onRemover={removerToast} />
+    </>
   );
 }
 
