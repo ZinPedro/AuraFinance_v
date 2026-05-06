@@ -99,7 +99,6 @@ function FormLogin() {
     <>
       <div style={{ background: "#ffffff", width: "480px", padding: "40px", borderRadius: "20px", display: "flex", flexDirection: "column" as const, gap: "20px" }}>
 
-        {/* Abas */}
         <div style={{ display: "flex", borderBottom: "2px solid #e5e7eb" }}>
           <button onClick={() => setModo("login")} style={{ flex: 1, padding: "10px", border: "none", background: "none", fontWeight: "600", fontSize: "14px", cursor: "pointer", color: modo === "login" ? "#4338ca" : "#9ca3af", borderBottom: modo === "login" ? "2px solid #4338ca" : "2px solid transparent", marginBottom: "-2px", transition: "all 0.2s" }}>
             Login
@@ -188,7 +187,6 @@ function FormLogin() {
         )}
       </div>
 
-      {/* TOAST - renderiza por cima de tudo */}
       <Toast toasts={toasts} onRemover={removerToast} />
     </>
   );
