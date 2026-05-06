@@ -1,5 +1,6 @@
 import { Bell, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Usuario {
   id_usuario: number;
@@ -9,6 +10,7 @@ interface Usuario {
 }
 
 function TopBar() {
+  const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
   const [usuario, setUsuario] = useState<Usuario | null>(null);
 
@@ -123,6 +125,7 @@ function TopBar() {
           </div>
 
           <div
+          onClick={() => navigate("/usersettings")}
             style={{
               width: "35px",
               height: "35px",
