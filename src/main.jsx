@@ -8,6 +8,7 @@ import DashBoard from './assets/pages/DashBoard'
 import Objectives from './assets/pages/Objectives'
 import Savings from './assets/pages/Savings'
 import Transactions from './assets/pages/Transactions'
+import UserSettings from './assets/pages/UserSettings'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/objectives" element={<Objectives />} />
         <Route path="/savings" element={<Savings />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/usersettings" element={<UserSettings />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
