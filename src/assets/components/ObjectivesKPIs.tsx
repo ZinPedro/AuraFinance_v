@@ -1,7 +1,6 @@
 import { Target, DollarSign, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
-
 type Objective = {
   id_objetivo: number;
   valor_meta: number;
@@ -26,7 +25,7 @@ export default function ObjectivesKPIs() {
 
   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-useEffect(() => {
+  useEffect(() => {
     async function fetchKPIs() {
       try {
         const res = await fetch("http://localhost:3000/objetivos/list", {
