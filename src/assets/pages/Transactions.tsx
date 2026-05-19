@@ -4,7 +4,8 @@ import { useState } from "react";
 import Sidebar from "../components/sidebar";
 import TopBar from "../components/topBar";
 import TransactionFilter, { TransactionFilters } from "../components/TransactionsFilter";
-import { TransactionsList, MOCK_TRANSACTIONS } from "../components/TransactionsList";
+import { TransactionsList} from "../components/TransactionsList";
+import { NewTransactionModal } from "../components/NewTransactionModal";
 
 
 function Transactions() {
@@ -19,6 +20,7 @@ function Transactions() {
 
   const currentPage = routeNames[location.pathname] || "Dashboard";
   const [openModal, setOpenModal] = useState(false);
+  const [refresh, setRefresh] = useState(0);
 
   const pageTitle =
     currentPage === "Dashboard"
@@ -77,12 +79,19 @@ const [filters, setFilters] = useState<TransactionFilters>({
           <TransactionFilter filters={filters} onChange={setFilters} />
 
           <div style={{display: "flex", gap: "16px", marginTop: "24px"}}>
-              <TransactionsList transactions={MOCK_TRANSACTIONS} filters={filters} />
+              <TransactionsList filters={filters} refresh={refresh}/>
 
           </div>
         </div>
       </div>
-      {/*{openModal && <NewObjectiveModal onClose={() => setOpenModal(false)} />} */}
+      {openModal && (
+        <NewTransactionModal
+          onClose={() => setOpenModal(false)}
+          onSuccess={() => {
+            setRefresh(r => r + 1)
+      }}
+  />
+)}
     </div>
   );
 }
