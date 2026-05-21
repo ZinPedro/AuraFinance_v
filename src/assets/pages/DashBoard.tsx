@@ -10,7 +10,6 @@ import DashBoardRecentTransactions from "../components/DashBoardRecentTransactio
 function DashBoard() {
   const location = useLocation();
 
-  //Mapeamento de rotas
   const routeNames: Record<string, string> = {
     "/dashboard": "Dashboard",
     "/objectives": "Objetivos",
@@ -20,7 +19,6 @@ function DashBoard() {
 
   const currentPage = routeNames[location.pathname] || "Dashboard";
 
-  //Título dinâmico
   const pageTitle =
     currentPage === "Dashboard"
       ? "Dashboard Geral"
@@ -34,14 +32,59 @@ function DashBoard() {
 
   return (
     <div>
+      <style>{`
+        .af-main-content {
+          margin-left: 260px;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        .af-page-body {
+          flex: 1;
+          background: #f9fafb;
+          padding: 24px 32px;
+        }
+
+        .af-charts-row {
+          display: flex;
+          gap: 16px;
+          margin-top: 24px;
+        }
+
+        .af-chart-main { flex: 2; }
+        .af-chart-side { flex: 1; }
+
+        @media (max-width: 768px) {
+          .af-main-content {
+            margin-left: 0;
+            padding-bottom: 72px;
+          }
+
+          .af-page-body {
+            padding: 16px;
+          }
+
+          .af-charts-row {
+            flex-direction: column;
+          }
+
+          .af-chart-main,
+          .af-chart-side {
+            flex: unset;
+            width: 100%;
+          }
+        }
+      `}</style>
+
       <Sidebar />
 
-      <div style={{marginLeft: "260px", display: "flex", flexDirection: "column", minHeight: "100vh",}}>
+      <div className="af-main-content">
         <TopBar />
 
-        <div style={{flex: 1, background: "#f9fafb", padding: "24px 32px",}}>
+        <div className="af-page-body">
           <div style={{ marginBottom: "24px" }}>
-            <div style={{fontSize: "16px",color: "#6b7280",marginBottom: "6px",}}>
+            <div style={{ fontSize: "16px", color: "#6b7280", marginBottom: "6px" }}>
               Início{" "}
               {currentPage && (
                 <>
@@ -52,20 +95,21 @@ function DashBoard() {
                 </>
               )}
             </div>
-            <h2 style={{margin: 0,color: "#111827",fontSize: "28px",}}>
+            <h2 style={{ margin: 0, color: "#111827", fontSize: "28px" }}>
               {pageTitle}
             </h2>
-            <p style={{marginTop: "6px",fontSize: "14px",color: "#6b7280",}}>
+            <p style={{ marginTop: "6px", fontSize: "14px", color: "#6b7280" }}>
               Bem-vindo! Aqui está o que está acontecendo com suas contas hoje.
             </p>
           </div>
+
           <DashboardKPIs />
-          <div style={{ display: "flex",gap: "16px",marginTop: "24px",}}>
-            <div style={{ flex: 2 }}>
+
+          <div className="af-charts-row">
+            <div className="af-chart-main">
               <DashboardFlux />
             </div>
-
-            <div style={{ flex: 1 }}>
+            <div className="af-chart-side">
               <DashBoardExpensesByCategory />
             </div>
           </div>

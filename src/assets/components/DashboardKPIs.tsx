@@ -82,39 +82,55 @@ export default function DashboardKPIs() {
 
   if (loading) {
     return (
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", width: "100%" }}>
-        {[1, 2, 3].map(i => (
-          <div key={i} style={{ background: "#fff", borderRadius: "16px", padding: "20px", height: "160px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: "13px", color: "#9ca3af" }}>Carregando...</span>
-          </div>
-        ))}
-      </div>
+      <>
+        <style>{`
+          .af-kpis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+          @media (max-width: 768px) {
+            .af-kpis-grid { grid-template-columns: 1fr; }
+          }
+        `}</style>
+        <div className="af-kpis-grid">
+          {[1, 2, 3].map(i => (
+            <div key={i} style={{ background: "#fff", borderRadius: "16px", padding: "20px", height: "160px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: "13px", color: "#9ca3af" }}>Carregando...</span>
+            </div>
+          ))}
+        </div>
+      </>
     );
   }
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", width: "100%" }}>
-      <KPI
-        title="Saldo Total"
-        value={formatBRL(saldoLiquido)}
-        change={saldoLiquido >= 0 ? "Positivo" : "Negativo"}
-        trend={saldoLiquido >= 0 ? "up" : "down"}
-        data={generateTrend(saldoLiquido, saldoLiquido >= 0)}
-      />
-      <KPI
-        title="Renda Total"
-        value={formatBRL(totEntrada)}
-        change="Entradas"
-        trend="up"
-        data={generateTrend(totEntrada, true)}
-      />
-      <KPI
-        title="Despesas Totais"
-        value={formatBRL(totSaida)}
-        change="Saídas"
-        trend="down"
-        data={generateTrend(totSaida, false)}
-      />
-    </div>
+    <>
+      <style>{`
+        .af-kpis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+        @media (max-width: 768px) {
+          .af-kpis-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
+      <div className="af-kpis-grid">
+        <KPI
+          title="Saldo Total"
+          value={formatBRL(saldoLiquido)}
+          change={saldoLiquido >= 0 ? "Positivo" : "Negativo"}
+          trend={saldoLiquido >= 0 ? "up" : "down"}
+          data={generateTrend(saldoLiquido, saldoLiquido >= 0)}
+        />
+        <KPI
+          title="Renda Total"
+          value={formatBRL(totEntrada)}
+          change="Entradas"
+          trend="up"
+          data={generateTrend(totEntrada, true)}
+        />
+        <KPI
+          title="Despesas Totais"
+          value={formatBRL(totSaida)}
+          change="Saídas"
+          trend="down"
+          data={generateTrend(totSaida, false)}
+        />
+      </div>
+    </>
   );
 }
