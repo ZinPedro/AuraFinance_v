@@ -23,15 +23,11 @@ function Objectives() {
   const [openModal, setOpenModal] = useState(false);
 
   const pageTitle =
-    currentPage === "Dashboard"
-      ? "Dashboard Geral"
-      : currentPage === "Objetivos"
-      ? "Meus Objetivos Financeiros"
-      : currentPage === "Transações"
-      ? "Entradas e Saídas"
-      : currentPage === "Investimentos"
-      ? "Investimentos"
-      : currentPage;
+    currentPage === "Dashboard" ? "Dashboard Geral" :
+    currentPage === "Objetivos" ? "Meus Objetivos Financeiros" :
+    currentPage === "Transações" ? "Entradas e Saídas" :
+    currentPage === "Investimentos" ? "Investimentos" :
+    currentPage;
 
   return (
     <div>
@@ -58,6 +54,17 @@ function Objectives() {
         .af-chart-main { flex: 2; }
         .af-chart-side { flex: 1; }
 
+        /* Botão: desktop inalterado */
+        .af-new-btn {
+          padding: 8px 16px;
+          font-size: 16px;
+          background: #312c85;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+
         @media (max-width: 768px) {
           .af-main-content {
             margin-left: 0;
@@ -66,6 +73,22 @@ function Objectives() {
 
           .af-page-body {
             padding: 16px;
+          }
+
+          /* Título e botão em coluna no mobile */
+          .af-title-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          /* Botão ocupa largura total e fica mais fácil de tocar */
+          .af-new-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 10px;
+            text-align: center;
           }
 
           .af-charts-row {
@@ -79,56 +102,61 @@ function Objectives() {
           }
         }
       `}</style>
+
       <Sidebar />
 
       <div className="af-main-content">
         <TopBar />
 
         <div className="af-page-body">
-          <div>
-            <div style={{fontSize: "16px", color: "#6b7280", marginBottom: "8px"}}>
+          <div style={{ marginBottom: "24px" }}>
+            <div style={{ fontSize: "16px", color: "#6b7280", marginBottom: "8px" }}>
               Início{" "}
               {currentPage && (
                 <>
                   &gt;{" "}
-                  <span style={{fontWeight: "500", color: "#262626"}}>
+                  <span style={{ fontWeight: "500", color: "#262626" }}>
                     {currentPage}
                   </span>
                 </>
               )}
             </div>
 
-            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-              <h2 style={{margin: 0, color: "#111827", fontSize: "28px"}}>
+            <div
+              className="af-title-row"
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+            >
+              <h2 style={{ margin: 0, color: "#111827", fontSize: "28px" }}>
                 {pageTitle}
               </h2>
 
-              <button onClick={() => setOpenModal(true)} style={{padding: "8px 16px", fontSize:"16px", background: "#312c85", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer"}}>
+              <button className="af-new-btn" onClick={() => setOpenModal(true)}>
                 + Novo Objetivo
               </button>
             </div>
 
-            <p style={{marginTop: "6px", fontSize: "14px", color: "#6b7280"}}>
+            <p style={{ marginTop: "6px", fontSize: "14px", color: "#6b7280" }}>
               Acompanhe e gerencie suas metas de curto, médio e longo prazo
             </p>
           </div>
 
           <ObjectivesKPIs />
 
-          <div style={{display: "flex", gap: "16px", marginTop: "24px"}}>
-            <div style={{flex: 2}}>
+          <div className="af-charts-row">
+            <div className="af-chart-main">
               <ObjectivesEvolution />
             </div>
-            <div style={{flex: 1}}>
+            <div className="af-chart-side">
               <ObjectivesDistribuitionByCategory />
             </div>
           </div>
 
-          <div style={{marginTop: "24px"}}>
+          <div style={{ marginTop: "24px" }}>
             <ObjectivesList />
           </div>
         </div>
       </div>
+
       {openModal && <NewObjectiveModal onClose={() => setOpenModal(false)} />}
     </div>
   );
