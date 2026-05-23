@@ -6,6 +6,7 @@ import TopBar from "../components/topBar";
 import SavingsTotalCard from "../components/SavingsTotalCard";
 import SavingsChart from "../components/SavingsChart";
 import SavingsList from "../components/SavingsList";
+import SavingsCards from "../components/SavingsCards";
 
 function Savings() {
   const location = useLocation();
@@ -21,74 +22,110 @@ function Savings() {
   const [openModal, setOpenModal] = useState(false);
 
   const pageTitle =
-    currentPage === "Dashboard"
-      ? "Dashboard Geral"
-      : currentPage === "Objetivos"
-      ? "Meus Objetivos Financeiros"
-      : currentPage === "Transações"
-      ? "Entradas e Saídas"
-      : currentPage === "Investimentos"
-      ? "Investimentos"
-      : currentPage;
+    currentPage === "Dashboard" ? "Dashboard Geral" :
+    currentPage === "Objetivos" ? "Meus Objetivos Financeiros" :
+    currentPage === "Transações" ? "Entradas e Saídas" :
+    currentPage === "Investimentos" ? "Investimentos" :
+    currentPage;
 
   return (
     <div>
+      <style>{`
+        .af-main-content {
+          margin-left: 260px;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        .af-page-body {
+          flex: 1;
+          background: #f9fafb;
+          padding: 24px 32px;
+        }
+
+        .af-title-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .af-title-actions {
+          display: flex;
+          gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+          .af-main-content {
+            margin-left: 0;
+            padding-bottom: 72px;
+          }
+
+          .af-page-body {
+            padding: 16px;
+          }
+
+          .af-title-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          .af-title-actions {
+            width: 100%;
+            flex-direction: column;
+          }
+
+          .af-title-actions button {
+            width: 100%;
+            padding: 12px !important;
+            font-size: 14px !important;
+            justify-content: center;
+          }
+        }
+      `}</style>
+
       <Sidebar />
 
-      <div style={{marginLeft: "260px", display: "flex", flexDirection: "column", minHeight: "100vh"}}>
+      <div className="af-main-content">
         <TopBar />
 
-        <div style={{flex: 1, background: "#f9fafb", padding: "24px 32px"}}>
-          <div>
-            <div style={{fontSize: "16px", color: "#6b7280", marginBottom: "8px"}}>
+        <div className="af-page-body">
+
+          {/* Header */}
+          <div style={{ marginBottom: "8px" }}>
+            <div style={{ fontSize: "16px", color: "#6b7280", marginBottom: "8px" }}>
               Início{" "}
               {currentPage && (
                 <>
                   &gt;{" "}
-                  <span style={{fontWeight: "500", color: "#262626"}}>
+                  <span style={{ fontWeight: "500", color: "#262626" }}>
                     {currentPage}
                   </span>
                 </>
               )}
             </div>
 
-            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-              <h2 style={{margin: 0, color: "#111827", fontSize: "28px"}}>
+            <div className="af-title-row">
+              <h2 style={{ margin: 0, color: "#111827", fontSize: "28px" }}>
                 {pageTitle}
               </h2>
-              <div style={{display: "flex", gap: "12px"}}>
-                <button onClick={() => setOpenModal(true)} style={{padding: "8px 16px", fontSize:"16px", background: "#9810fa", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer"}}>
-                  Simular Investimento
-                </button>
-                <button onClick={() => setOpenModal(true)} style={{padding: "8px 16px", fontSize:"16px", background: "#312c85", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer"}}>
-                  + Nova Transação
-                </button>
+              <div className="af-title-actions">
+                
               </div>
             </div>
 
-            <p style={{marginTop: "6px", fontSize: "14px", color: "#6b7280"}}>
+            <p style={{ marginTop: "6px", fontSize: "14px", color: "#6b7280" }}>
               Explore opções de investimento e gerencie sua carteira
             </p>
           </div>
 
-          <SavingsTotalCard 
-            total={10000} 
-            monthlyChange={3.2} 
-            monthlyProfit={500} 
-            yearlyProfit={6000} 
-            monthlyReturn={1.85} 
-          />
+          {/* KPIs da PETR4 via brapi */}
+          <SavingsCards />
 
-          <div style={{ gap: "16px", marginTop: "24px"}}>
-              <SavingsChart />
-          </div>
-
-          <div style={{marginTop: "24px"}}>
-            <SavingsList />
-          </div>
+          
         </div>
       </div>
-      
     </div>
   );
 }
