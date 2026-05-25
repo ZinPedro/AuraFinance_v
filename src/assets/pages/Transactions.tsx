@@ -33,21 +33,67 @@ function Transactions() {
       ? "Investimentos"
       : currentPage;
 
-const [filters, setFilters] = useState<TransactionFilters>({
-  month: "",
-  category: "",
-  type: "",
-  status: "",
-});
+  const [filters, setFilters] = useState<TransactionFilters>({
+    month: "",
+    category: "",
+    type: "",
+    status: "",
+  });
 
   return (
     <div>
+      <style>{`
+        .af-main-content {
+          margin-left: 260px;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        .af-page-body {
+          flex: 1;
+          background: #f9fafb;
+          padding: 24px 32px;
+        }
+
+        .af-title-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        @media (max-width: 768px) {
+          .af-main-content {
+            margin-left: 0;
+            padding-bottom: 72px;
+          }
+
+          .af-page-body {
+            padding: 16px;
+          }
+
+          .af-title-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          .af-nova-btn {
+            width: 100%;
+            padding: 12px !important;
+            font-size: 14px !important;
+            text-align: center;
+            border-radius: 10px !important;
+          }
+        }
+      `}</style>
+
       <Sidebar />
 
-      <div style={{marginLeft: "260px", display: "flex", flexDirection: "column", minHeight: "100vh"}}>
+      <div className="af-main-content">
         <TopBar />
 
-        <div style={{flex: 1, background: "#f9fafb", padding: "24px 32px"}}>
+        <div className="af-page-body">
           <div>
             <div style={{fontSize: "16px", color: "#6b7280", marginBottom: "8px"}}>
               Início{" "}
@@ -61,12 +107,16 @@ const [filters, setFilters] = useState<TransactionFilters>({
               )}
             </div>
 
-            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+            <div className="af-title-row">
               <h2 style={{margin: 0, color: "#111827", fontSize: "28px"}}>
                 {pageTitle}
               </h2>
 
-              <button onClick={() => setOpenModal(true)} style={{padding: "8px 16px", fontSize:"16px", background: "#312c85", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer"}}>
+              <button
+                className="af-nova-btn"
+                onClick={() => setOpenModal(true)}
+                style={{padding: "8px 16px", fontSize: "16px", background: "#312c85", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer"}}
+              >
                 + Nova Transação
               </button>
             </div>
@@ -79,19 +129,19 @@ const [filters, setFilters] = useState<TransactionFilters>({
           <TransactionFilter filters={filters} onChange={setFilters} />
 
           <div style={{display: "flex", gap: "16px", marginTop: "24px"}}>
-              <TransactionsList filters={filters} refresh={refresh}/>
-
+            <TransactionsList filters={filters} refresh={refresh} />
           </div>
         </div>
       </div>
+
       {openModal && (
         <NewTransactionModal
           onClose={() => setOpenModal(false)}
           onSuccess={() => {
-            setRefresh(r => r + 1)
-      }}
-  />
-)}
+            setRefresh(r => r + 1);
+          }}
+        />
+      )}
     </div>
   );
 }
