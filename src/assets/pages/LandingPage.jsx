@@ -1,6 +1,5 @@
 import Hero from '../landing/Hero'
 import HowItWorks from '../landing/HowItWorks';
-import Statistics from '../landing/Statistics'
 import Footer from '../landing/Footer';
 import Objectives from '../landing/objectives'
 
@@ -9,7 +8,6 @@ function LandingPage() {
     <div>
       <Hero />
       <Objectives />
-      <Statistics />
       <HowItWorks />
       <Footer />
     </div>

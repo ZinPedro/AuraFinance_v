@@ -87,3 +87,45 @@ label{
   border: 1px solid #4f39f6;
   color: #fff;
 }
+
+.buttonOrganizer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.buttonOrganizer button {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  border-radius: 0.35rem;
+  white-space: nowrap;
+}
+
+.buttonOrganizer button:hover { opacity: 0.88; transform: translateY(-1px); }
+.buttonOrganizer button:active { transform: translateY(0); }
+
+#startButton {
+  border: none;
+  background: #ffffffe6;
+  color: #322b97;
+}
+
+#simulateButton {
+  background: #372aac;
+  border: 1px solid #4f39f6;
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .buttonOrganizer {
+    flex-direction: column;
+  }
+  .buttonOrganizer button {
+    width: 100%;
+  }
+}
