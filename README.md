@@ -403,55 +403,6 @@ A comunicação entre o Back-end e o Banco de Dados é realizada com **Sequelize
 
 ---
 
-# 🚀 Como Executar Localmente
-
-## Pré-requisitos
-
-* Node.js;
-* npm;
-* MySQL local ou hospedado;
-* Git.
-
-## 1. Clonar o repositório
-
-```bash
-git clone https://github.com/viniciusMoraesChaves/AuraFinance.git
-cd AuraFinance
-```
-
-## 2. Configurar o Back-end
-
-```bash
-cd backend
-npm install
-```
-
-Crie um arquivo `.env` dentro da pasta `backend`:
-
-```env
-DATABASE_URL=mysql://usuario:senha@host:porta/nome_do_banco
-JWT_SECRET=sua_chave_secreta
-PORT=3000
-```
-
-Execute o servidor:
-
-```bash
-npm run dev
-```
-
-Ou:
-
-```bash
-npm start
-```
-
-A API ficará disponível em:
-
-```text
-http://localhost:3000
-```
-
 ## 3. Configurar o Front-end
 
 Em outro terminal, volte para a raiz do projeto:
