@@ -403,35 +403,6 @@ A comunicação entre o Back-end e o Banco de Dados é realizada com **Sequelize
 
 ---
 
-## 3. Configurar o Front-end
-
-Em outro terminal, volte para a raiz do projeto:
-
-```bash
-cd ..
-npm install
-```
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-Execute o Front-end:
-
-```bash
-npm run dev
-```
-
-O Vite exibirá o endereço local da aplicação, geralmente:
-
-```text
-http://localhost:5173
-```
-
----
-
 # 🧪 Testes e Evidências
 
 Durante o desenvolvimento, foram realizados testes manuais e exploratórios para validar o funcionamento do sistema e a integração entre as camadas.
