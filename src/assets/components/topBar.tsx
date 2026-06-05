@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { Bell, Search, ArrowLeftRight, Target, TrendingUp, X } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
@@ -64,7 +65,7 @@ function TopBar() {
     async function fetchUsuario() {
       if (!token) return;
       try {
-        const res = await fetch("http://localhost:3000/auth/me", {
+        const res = await fetch(apiUrl("/auth/me"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -83,7 +84,7 @@ function TopBar() {
     await Promise.allSettled([
       (async () => {
         const res = await fetch(
-          `http://localhost:3000/transacoes/list?limit=50`,
+          apiUrl(`/transacoes/list?limit=50`),
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) return;
@@ -111,7 +112,7 @@ function TopBar() {
 
       (async () => {
         const res = await fetch(
-          `http://localhost:3000/objetivos/list`,
+          apiUrl(`/objetivos/list`),
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) return;

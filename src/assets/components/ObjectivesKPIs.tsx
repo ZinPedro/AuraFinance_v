@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { Target, DollarSign, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -27,7 +28,7 @@ export default function ObjectivesKPIs() {
   useEffect(() => {
     async function fetchKPIs() {
       try {
-        const res = await fetch("http://localhost:3000/objetivos/list", {
+        const res = await fetch(apiUrl("/objetivos/list"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();

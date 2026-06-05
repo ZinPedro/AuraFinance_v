@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useEffect, useState } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
@@ -51,7 +52,7 @@ export default function DashboardKPIs() {
   useEffect(() => {
     async function fetchResumo() {
       try {
-        const res = await fetch("http://localhost:3000/transacoes/resumo", {
+        const res = await fetch(apiUrl("/transacoes/resumo"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
