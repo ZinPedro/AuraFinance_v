@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
@@ -28,7 +29,7 @@ function FormLogin() {
     e.preventDefault();
     setCarregando(true);
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch(apiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -50,7 +51,7 @@ function FormLogin() {
     if (senhaCadastro !== confirmarSenha) { mostrarToast("As senhas não coincidem!", "aviso"); return; }
     setCarregando(true);
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch(apiUrl("/auth/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email: emailCadastro, idade: Number(idade), senha: senhaCadastro }),

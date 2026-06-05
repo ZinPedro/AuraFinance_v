@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useState, useEffect } from "react";
 import { X, Target } from "lucide-react";
 import { Toast } from "./Toast";
@@ -27,7 +28,7 @@ export default function NewObjectiveModal({ onClose }: Props) {
     setCarregando(true);
 
     try {
-      const res = await fetch("http://localhost:3000/objetivos/create", {
+      const res = await fetch(apiUrl("/objetivos/create"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

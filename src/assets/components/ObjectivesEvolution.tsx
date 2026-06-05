@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useEffect, useState } from "react";
 import {
   LineChart,
@@ -32,7 +33,7 @@ export function ObjectivesEvolution() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const res = await fetch("http://localhost:3000/objetivos/list", {
+          const res = await fetch(apiUrl("/objetivos/list"), {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await res.json();

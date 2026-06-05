@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -16,7 +17,7 @@ export function ObjectivesDistribuitionByCategory() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("http://localhost:3000/objetivos/list", {
+        const res = await fetch(apiUrl("/objetivos/list"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const json = await res.json();

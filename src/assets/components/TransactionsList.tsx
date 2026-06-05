@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useState, useEffect } from "react";
 import { TransactionFilters } from "./TransactionsFilter";
 
@@ -112,7 +113,7 @@ function EditTransactionModal({
     }
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/transacoes/edit/${transaction.id_transacao}`, {
+      const res = await fetch(apiUrl(`/transacoes/edit/${transaction.id_transacao}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -189,7 +190,7 @@ function DeleteConfirmModal({ transaction, token, onClose, onSuccess }: {
   async function handleDelete() {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/transacoes/delete-transacao/${transaction.id_transacao}`, {
+      const res = await fetch(apiUrl(`/transacoes/delete-transacao/${transaction.id_transacao}`), {
         method: "DELETE", headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) { onSuccess(); onClose(); }
@@ -244,7 +245,7 @@ export function TransactionsList({ filters, refresh = 0 }: TransactionsListProps
   useEffect(() => {
     async function fetchCategorias() {
       try {
-        const res = await fetch("http://localhost:3000/transacoes/listcategorias", { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetch(apiUrl("/transacoes/listcategorias"), { headers: { Authorization: `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok) setCategorias(data.categorias);
       } catch { console.error("Erro ao buscar categorias"); }
@@ -270,7 +271,7 @@ export function TransactionsList({ filters, refresh = 0 }: TransactionsListProps
         if (filters.type === "saida")   params.append("entrada_saida", "0");
         if (filters.status) params.append("status", filters.status);
 
-        const res = await fetch(`http://localhost:3000/transacoes/list?${params.toString()}`, { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetch(apiUrl(`/transacoes/list?${params.toString()}`), { headers: { Authorization: `Bearer ${token}` } });
         const data = await res.json();
         if (res.ok) {
           setTransactions(data.transacoes);

@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "../components/Toast";
@@ -37,7 +38,7 @@ function UserSettings() {
     async function buscarUsuario() {
       if (!token) { navigate("/"); return; }
       try {
-        const res = await fetch("http://localhost:3000/auth/me", {
+        const res = await fetch(apiUrl("/auth/me"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -55,7 +56,7 @@ function UserSettings() {
   async function salvarInfo(e: React.FormEvent) {
     e.preventDefault(); setSalvandoInfo(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/edit-user", {
+      const res = await fetch(apiUrl("/auth/edit-user"), {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ nome, idade: Number(idade) }),
@@ -76,7 +77,7 @@ function UserSettings() {
     if (novaSenha.length < 8) { mostrarToast("Mínimo 8 caracteres!", "aviso"); return; }
     setSalvandoSenha(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/edit-user", {
+      const res = await fetch(apiUrl("/auth/edit-user"), {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ senha: novaSenha }),
@@ -95,7 +96,7 @@ function UserSettings() {
     if (!senhaDelete) { mostrarToast("Digite sua senha para confirmar!", "aviso"); return; }
     setDeletando(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/delete-user", {
+      const res = await fetch(apiUrl("/auth/delete-user"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ senha: senhaDelete }),

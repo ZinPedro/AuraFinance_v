@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { Pencil, Trash2, Target, Plus, Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "../hooks/useToast";
@@ -35,7 +36,7 @@ export function AddValueModal({ objetivo, token, onClose, onSuccess }: {
     e.preventDefault();
     setCarregando(true);
     try {
-      const res = await fetch(`http://localhost:3000/objetivos/add/${objetivo.id_objetivo}`, {
+      const res = await fetch(apiUrl(`/objetivos/add/${objetivo.id_objetivo}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ valor: Number(valor) }),
@@ -128,7 +129,7 @@ export function ObjectiveCard({ data, token, onDelete, onUpdate, onAddValue }: {
   async function handleSalvar() {
     setSalvando(true);
     try {
-      const res = await fetch(`http://localhost:3000/objetivos/edit/${data.id_objetivo}`, {
+      const res = await fetch(apiUrl(`/objetivos/edit/${data.id_objetivo}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ nome: form.nome, valor_meta: Number(form.valor_meta), data_limite: form.data_limite || null }),
@@ -150,7 +151,7 @@ export function ObjectiveCard({ data, token, onDelete, onUpdate, onAddValue }: {
   async function handleDeletar() {
     setDeletando(true);
     try {
-      const res = await fetch(`http://localhost:3000/objetivos/delete/${data.id_objetivo}`, {
+      const res = await fetch(apiUrl(`/objetivos/delete/${data.id_objetivo}`), {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

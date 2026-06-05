@@ -1,3 +1,4 @@
+import { apiUrl } from "../../config/api";
 import { useEffect, useState } from "react";
 
 type Categoria = {
@@ -30,7 +31,7 @@ export function NewTransactionModal({ onClose, onSuccess }: Props) {
   useEffect(() => {
     async function fetchCategorias() {
       try {
-        const res = await fetch("http://localhost:3000/transacoes/listcategorias", {
+        const res = await fetch(apiUrl("/transacoes/listcategorias"), {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -56,7 +57,7 @@ export function NewTransactionModal({ onClose, onSuccess }: Props) {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/transacoes/create", {
+      const res = await fetch(apiUrl("/transacoes/create"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
