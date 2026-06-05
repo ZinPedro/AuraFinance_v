@@ -29,3 +29,19 @@ backend/node_modules/
 .env
 backend/.env
 .env.save
+
+# Environment files
+.env
+.env.*
+backend/.env
+backend/.env.*
+
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+coverage/
