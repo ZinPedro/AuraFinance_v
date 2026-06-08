@@ -40,7 +40,6 @@ O projeto foi desenvolvido na disciplina **PI: Projeto e Implementação de Apli
 * [Estrutura do Repositório](#-estrutura-do-repositório)
 * [Rotas da API](#️-rotas-da-api)
 * [Banco de Dados](#️-banco-de-dados)
-* [Como Executar Localmente](#-como-executar-localmente)
 * [Testes e Evidências](#-testes-e-evidências)
 * [Implantação](#-implantação)
 * [Planejamento Ágil](#-planejamento-ágil)
